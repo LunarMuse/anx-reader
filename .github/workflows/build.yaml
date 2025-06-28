@@ -140,54 +140,54 @@ jobs:
         shell: pwsh
         run: ./scripts/build_windows.ps1
 
-      - name: Upload unsigned Windows zip
-        if: matrix.platform == 'windows'
-        uses: actions/upload-artifact@v4
-        id: upload-unsigned-zip
-        with:
-          name: windows-unsigned-zip
-          path: build/windows/unsigned/app.zip
-          if-no-files-found: error
+      #- name: Upload unsigned Windows zip
+      #  if: matrix.platform == 'windows'
+      #  uses: actions/upload-artifact@v4
+      #  id: upload-unsigned-zip
+      #  with:
+      #    name: windows-unsigned-zip
+      #    path: build/windows/unsigned/app.zip
+      #    if-no-files-found: error
 
-      - name: Sign Windows zip
-        if: matrix.platform == 'windows'
-        uses: signpath/github-action-submit-signing-request@v1.1
-        with:
-          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-          organization-id: '254a26d6-6c3a-4a55-9ca6-890d0d34deb1'
-          project-slug: 'anx-reader'
-          signing-policy-slug: 'release-signing'
-          artifact-configuration-slug: 'initial_zip'
-          github-artifact-id: ${{ steps.upload-unsigned-zip.outputs.artifact-id }}
-          wait-for-completion: true
-          output-artifact-directory: 'build/windows'
+      # - name: Sign Windows zip
+      #  if: matrix.platform == 'windows'
+      #  uses: signpath/github-action-submit-signing-request@v1.1
+      #  with:
+      #    api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+      #    organization-id: '254a26d6-6c3a-4a55-9ca6-890d0d34deb1'
+      #    project-slug: 'anx-reader'
+      #    signing-policy-slug: 'release-signing'
+      #    artifact-configuration-slug: 'initial_zip'
+      #    github-artifact-id: ${{ steps.upload-unsigned-zip.outputs.artifact-id }}
+      #    wait-for-completion: true
+      #    output-artifact-directory: 'build/windows'
       
       - name: Build unsigned Windows exe
         if: matrix.platform == 'windows'
         shell: pwsh
         run: ./scripts/build_windows_exe.ps1
 
-      - name: Upload unsigned Windows exe
-        if: matrix.platform == 'windows'
-        uses: actions/upload-artifact@v4
-        id: upload-unsigned-exe
-        with:
-          name: windows-unsigned-exe
-          path: build/windows/unsigned/app.exe
-          if-no-files-found: error
+      #- name: Upload unsigned Windows exe
+      #  if: matrix.platform == 'windows'
+      ##  uses: actions/upload-artifact@v4
+      #  id: upload-unsigned-exe
+      #  with:
+      #    name: windows-unsigned-exe
+      #    path: build/windows/unsigned/app.exe
+      #    if-no-files-found: error
 
-      - name: Sign Windows exe
-        if: matrix.platform == 'windows'
-        uses: signpath/github-action-submit-signing-request@v1.1
-        with:
-          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-          organization-id: 254a26d6-6c3a-4a55-9ca6-890d0d34deb1
-          project-slug: 'anx-reader'
-          signing-policy-slug: 'release-signing'
-          artifact-configuration-slug: 'initial_exe'
-          github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
-          wait-for-completion: true
-          output-artifact-directory: 'build/windows'
+      #- name: Sign Windows exe
+      #  if: matrix.platform == 'windows'
+      #  uses: signpath/github-action-submit-signing-request@v1.1
+      #  with:
+      #    api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+      #    organization-id: 254a26d6-6c3a-4a55-9ca6-890d0d34deb1
+      #    project-slug: 'anx-reader'
+      #    signing-policy-slug: 'release-signing'
+      #    artifact-configuration-slug: 'initial_exe'
+      #    github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
+      #    wait-for-completion: true
+      #    output-artifact-directory: 'build/windows'
 
       - name: Build for macOS
         if: matrix.platform == 'macos'
@@ -240,33 +240,33 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
         shell: bash
       
-      - name: Upload artifacts
-        if: env.IS_ALPHA == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.platform }}-artifacts
-          path: |
-            build/app/outputs/flutter-apk/*.apk
-            build/windows/*.zip
-            build/windows/*.exe
-            build/macos/*.dmg
-            build/macos/*.zip
-            build/ios/*.ipa
-            build/ios/*.zip
-          if-no-files-found: warn
+      # - name: Upload artifacts
+      # if: env.IS_ALPHA == 'true'
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: ${{ matrix.platform }}-artifacts
+      #    path: |
+      #      build/app/outputs/flutter-apk/*.apk
+      #      build/windows/*.zip
+      #      build/windows/*.exe
+      #      build/macos/*.dmg
+      #      build/macos/*.zip
+      #      build/ios/*.ipa
+      #      build/ios/*.zip
+      #    if-no-files-found: warn
 
-      - name: Create Release
-        if: env.IS_ALPHA != 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            build/app/outputs/flutter-apk/*.apk
-            build/windows/*.zip
-            build/windows/*.exe
-            build/macos/*.dmg
-            build/macos/*.zip
-            build/ios/*.ipa
-            build/ios/*.zip
-          body: ${{ env.RELEASE_NOTES }}
-          generate_release_notes: false
-          prerelease: ${{ env.IS_BETA == 'true' }}
+      # - name: Create Release
+      ##  if: env.IS_ALPHA != 'true'
+      #  uses: softprops/action-gh-release@v2
+      #  with:
+      #    files: |
+      #      build/app/outputs/flutter-apk/*.apk
+      #      build/windows/*.zip
+      #      build/windows/*.exe
+      #      build/macos/*.dmg
+      #      build/macos/*.zip
+      #      build/ios/*.ipa
+      #      build/ios/*.zip
+      #    body: ${{ env.RELEASE_NOTES }}
+      #    generate_release_notes: false
+      #    prerelease: ${{ env.IS_BETA == 'true' }}
