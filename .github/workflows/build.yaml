@@ -1,11 +1,7 @@
 name: Build & Release
 on:
-  push:
-    tags:
-      - 'v*'
-      - 'beta-*'
-      - 'alpha-*'
-
+  push
+  
 permissions:
   contents: write
 
